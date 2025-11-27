@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Orbitron', 'Segoe UI', monospace;
+    background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0d1b2a 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: #00d4ff;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 212, 255, 0.03) 0px,
+            rgba(0, 212, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.pokedex-container {
+    max-width: 550px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, rgba(10, 14, 39, 0.95) 0%, rgba(26, 26, 62, 0.95) 100%);
+    border-radius: 4px;
+    box-shadow: 
+        0 0 30px rgba(0, 212, 255, 0.4),
+        0 0 60px rgba(0, 212, 255, 0.2),
+        inset 0 0 20px rgba(0, 212, 255, 0.1);
+    padding: 2.5rem;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #00d4ff, #0088ff, #00d4ff) 1;
+    position: relative;
+    z-index: 2;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    padding-bottom: 1.5rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    color: #00d4ff;
+    margin-bottom: 0.5rem;
+    text-shadow: 
+        0 0 10px #00d4ff,
+        0 0 20px #0088ff,
+        0 0 30px rgba(0, 212, 255, 0.5);
+    letter-spacing: 3px;
+    font-weight: 900;
+}
+
+.header p {
+    color: #00d4ff;
+    font-size: 0.85rem;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+    letter-spacing: 2px;
+}
+
+.search-section {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.search-section input {
+    flex: 1;
+    padding: 0.9rem;
+    border: 2px solid #00d4ff;
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 2px;
+    font-size: 1rem;
+    color: #00d4ff;
+    font-family: 'Orbitron', monospace;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 0 10px rgba(0, 212, 255, 0.1);
+}
+
+.search-section input::placeholder {
+    color: rgba(0, 212, 255, 0.5);
+}
+
+.search-section input:focus {
+    outline: none;
+    border-color: #ff00ff;
+    box-shadow: 
+        inset 0 0 10px rgba(0, 212, 255, 0.2),
+        0 0 15px rgba(255, 0, 255, 0.4);
+    background: rgba(0, 212, 255, 0.08);
+}
+
+.search-section button {
+    padding: 0.9rem 2rem;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2) 0%, rgba(0, 136, 255, 0.2) 100%);
+    color: #00d4ff;
+    border: 2px solid #00d4ff;
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Orbitron', monospace;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.search-section button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.6);
+    border-color: #ff00ff;
+    color: #ff00ff;
+}
+
+.search-section button:active {
+    transform: translateY(0);
+}
+
+.pokemon-card {
+    display: none;
+    animation: slideIn 0.4s ease;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(0, 136, 255, 0.05) 100%);
+    padding: 1.5rem;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-radius: 2px;
+    box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.05);
+}
+
+.pokemon-card.show {
+    display: block;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.pokemon-image {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, rgba(0, 136, 255, 0.05) 100%);
+    border: 1px dashed rgba(0, 212, 255, 0.3);
+    border-radius: 2px;
+}
+
+.pokemon-image img {
+    width: 180px;
+    height: 180px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6));
+}
+
+.pokemon-name {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #00d4ff;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 
+        0 0 10px #00d4ff,
+        0 0 20px rgba(0, 212, 255, 0.5);
+}
+
+.pokemon-id {
+    text-align: center;
+    color: #0088ff;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+}
+
+.pokemon-type {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.type-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #00d4ff;
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    letter-spacing: 1px;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+}
+
+.type-normal { border-color: #808080; color: #808080; }
+.type-fire { border-color: #ff6b35; color: #ff6b35; }
+.type-water { border-color: #00a8ff; color: #00a8ff; }
+.type-electric { border-color: #ffeb3b; color: #ffeb3b; }
+.type-grass { border-color: #00d441; color: #00d441; }
+.type-ice { border-color: #00d4ff; color: #00d4ff; }
+.type-fighting { border-color: #ff4444; color: #ff4444; }
+.type-poison { border-color: #dd33ff; color: #dd33ff; }
+.type-ground { border-color: #dd9933; color: #dd9933; }
+.type-flying { border-color: #aa99ff; color: #aa99ff; }
+.type-psychic { border-color: #ff66bb; color: #ff66bb; }
+.type-bug { border-color: #88dd33; color: #88dd33; }
+.type-rock { border-color: #aa8844; color: #aa8844; }
+.type-ghost { border-color: #7766ff; color: #7766ff; }
+.type-dragon { border-color: #7744ff; color: #7744ff; }
+.type-dark { border-color: #666666; color: #666666; }
+.type-steel { border-color: #88ccff; color: #88ccff; }
+.type-fairy { border-color: #ff88ee; color: #ff88ee; }
+
+.pokemon-stats {
+    background: rgba(0, 212, 255, 0.08);
+    border-radius: 2px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.stat-row:last-child {
+    margin-bottom: 0;
+}
+
+.stat-name {
+    font-weight: 700;
+    color: #00d4ff;
+    min-width: 70px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.stat-bar {
+    flex: 1;
+    height: 10px;
+    background: rgba(0, 136, 255, 0.2);
+    border-radius: 1px;
+    margin: 0 0.75rem;
+    overflow: hidden;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff 0%, #0088ff 100%);
+    border-radius: 0px;
+    transition: width 0.4s ease;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #00d4ff;
+    min-width: 40px;
+    text-align: right;
+    font-size: 0.85rem;
+}
+
+.error-message {
+    display: none;
+    padding: 1rem;
+    background: rgba(255, 0, 68, 0.1);
+    color: #ff0044;
+    border: 2px solid #ff0044;
+    border-radius: 2px;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-shadow: 0 0 8px rgba(255, 0, 68, 0.4);
+    letter-spacing: 0.5px;
+}
+
+.error-message.show {
+    display: block;
+    animation: slideIn 0.4s ease;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    padding: 1rem;
+    color: #00d4ff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.loading.show {
+    display: block;
+}
+
+.loading::after {
+    content: '';
+    animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}

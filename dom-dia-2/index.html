@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intro al DOM</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .caja {
+            width: 100px;
+            height: 100px;
+            background-color: lightblue;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+    <!-- Estilos de la calculadora web (se añaden para la sección solicitada) -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Manipulando el DOM con JS</h1>
+    
+    <div id="miCaja" class="caja">Caja</div>
+    
+    <button id="btnCambiarColor">Cambiar Color</button>
+    <button id="btnCambiarTexto">Cambiar Texto</button>
+
+    <script src="dom.js"></script>
+    
+    <!-- ==================== Calculadora web completa (HTML/CSS/JS) ==================== -->
+    <hr>
+    <h2>Calculadora web (HTML / CSS / JavaScript)</h2>
+    <p>Calculadora visual con soporte por clic y por teclado (teclas numéricas y Numpad). Incluye accesibilidad y comentarios en <code>app.js</code>.</p>
+
+    <div class="webcalc" id="webcalc" aria-label="Calculadora" role="application">
+        <div class="webcalc-screen" id="wc-screen" aria-live="polite">0</div>
+
+        <div class="webcalc-keypad">
+            <!-- filas de botones -->
+            <button class="wc-btn wc-btn-op" data-value="%" aria-label="módulo">%</button>
+            <button class="wc-btn wc-btn-op" data-value="/" aria-label="dividir">÷</button>
+            <button class="wc-btn wc-btn-op" data-value="*" aria-label="multiplicar">×</button>
+            <button class="wc-btn wc-btn-clear" id="wc-clear" aria-label="limpiar">C</button>
+
+            <button class="wc-btn" data-value="7">7</button>
+            <button class="wc-btn" data-value="8">8</button>
+            <button class="wc-btn" data-value="9">9</button>
+            <button class="wc-btn wc-btn-op" data-value="-" aria-label="restar">−</button>
+
+            <button class="wc-btn" data-value="4">4</button>
+            <button class="wc-btn" data-value="5">5</button>
+            <button class="wc-btn" data-value="6">6</button>
+            <button class="wc-btn wc-btn-op" data-value="+" aria-label="sumar">+</button>
+
+            <button class="wc-btn" data-value="1">1</button>
+            <button class="wc-btn" data-value="2">2</button>
+            <button class="wc-btn" data-value="3">3</button>
+            <button class="wc-btn wc-btn-equals" id="wc-equals" aria-label="igual">=</button>
+
+            <button class="wc-btn wc-btn-zero" data-value="0">0</button>
+            <button class="wc-btn" data-value=".">.</button>
+            <button class="wc-btn" data-value="(" aria-label="paréntesis abrir">(</button>
+            <button class="wc-btn" data-value=")" aria-label="paréntesis cerrar">)</button>
+        </div>
+
+        <div class="webcalc-help">
+            <p>Atajos de teclado soportados: teclas 0-9, punto (.), + - * / %, Enter (calcular), Backspace (borrar último), Esc (limpiar).</p>
+            <p>Soporta tanto teclado alfanumérico como Numpad.</p>
+        </div>
+    </div>
+
+    <!-- Conectar el script que implementa la calculadora web -->
+    <script src="app.js"></script>
+
+    <!-- Conversor de temperaturas (no borra lo demás) -->
+    <hr>
+    <h2>Conversor de temperaturas (Celsius → Fahrenheit / Kelvin)</h2>
+    <p>Introduce una temperatura en Celsius y pulsa el botón para convertirla.</p>
+    <div id="temp-converter" style="max-width:360px;border:1px solid #e0e0e0;padding:10px;border-radius:6px;">
+        <label for="temp-celsius-input">Celsius (°C):</label>
+        <input id="temp-celsius-input" type="text" value="25" aria-label="Temperatura en Celsius">
+        <div style="margin-top:8px;">
+            <button id="temp-to-f">Convertir a °F</button>
+            <button id="temp-to-k">Convertir a K</button>
+        </div>
+        <div style="margin-top:8px;">Resultado: <span id="temp-result">-</span></div>
+    </div>
+
+    <script src="temp.js"></script>
+
+    <!-- Generador de Colores Aleatorios -->
+    <hr>
+    <h2>Generador de Colores Aleatorios</h2>
+    <p>Genera colores hexadecimales aleatorios (#RRGGBB) con un clic.</p>
+    
+    <div class="color-generator">
+        <div class="cg-color-box" id="cg-color-box" aria-label="Caja de color"></div>
+        <p class="cg-hex-text">Código: <span id="cg-hex-display">#000000</span></p>
+        <div class="cg-button-group">
+            <button id="cg-generate-btn" class="cg-btn cg-btn-generate" aria-label="Generar nuevo color">Generar Color</button>
+            <button id="cg-copy-btn" class="cg-btn cg-btn-copy" aria-label="Copiar código de color">Copiar</button>
+        </div>
+    </div>
+
+    <script src="color-gen.js"></script>
+
+    <!-- Reloj Digital Interactivo con Alarma -->
+    <hr>
+    <h2>Reloj Digital Interactivo con Alarma</h2>
+    <p>Reloj digital con alarma personalizable, muestra fecha en español y saludos según la hora del día.</p>
+
+    <div class="digital-clock" id="digital-clock" aria-label="Reloj digital">
+        <div class="clock-greeting" id="clock-greeting">Buenos días</div>
+        <div class="clock-display" id="clock-display">00:00:00</div>
+        <div class="clock-date" id="clock-date">Lunes, 26 de Noviembre de 2025</div>
+
+        <div class="clock-alarm-section">
+            <h3>Configurar Alarma</h3>
+            <label for="clock-alarm-input">Selecciona la hora:</label>
+            <input id="clock-alarm-input" class="clock-alarm-input" type="time" aria-label="Hora de alarma">
+            
+            <div class="clock-alarm-buttons">
+                <button id="clock-set-alarm" class="clock-btn" aria-label="Establecer alarma">Establecer Alarma</button>
+                <button id="clock-cancel-alarm" class="clock-btn" aria-label="Cancelar alarma">Cancelar Alarma</button>
+            </div>
+
+            <div class="clock-alarm-status" id="clock-alarm-status">Sin alarma</div>
+            
+            <div class="clock-alarm-notification" id="clock-alarm-notification" role="alert">
+                ¡¡ALARMA!!
+            </div>
+        </div>
+
+        <button id="clock-toggle-mode" class="clock-mode-toggle" aria-label="Toggle entre 24h y 12h">Modo 24h ✓</button>
+    </div>
+
+    <script src="clock.js"></script>
+
+    <!-- Analizador de Texto -->
+    <hr>
+    <h2>Analizador de Texto en Tiempo Real</h2>
+    <p>Escribe o pega texto para obtener estadísticas en tiempo real: caracteres, palabras, oraciones y tiempo estimado de lectura.</p>
+
+    <div class="text-analyzer" id="text-analyzer">
+        <!-- TEXTAREA: Área grande para que el usuario escriba texto -->
+        <textarea 
+            id="ta-input" 
+            class="ta-textarea" 
+            placeholder="Escribe o pega tu texto aquí..." 
+            aria-label="Área de texto para análisis">
+        </textarea>
+
+        <!-- SECCIÓN DE ESTADÍSTICAS: Muestra métricas en tiempo real -->
+        <div class="ta-stats-grid">
+            <!-- Tarjeta 1: Caracteres con espacios -->
+            <div class="ta-stat-card ta-stat-chars-with-spaces">
+                <div class="ta-stat-label">Caracteres</div>
+                <div class="ta-stat-value" id="ta-chars-with-spaces">0</div>
+                <div class="ta-stat-sublabel">(con espacios)</div>
+            </div>
+
+            <!-- Tarjeta 2: Caracteres sin espacios -->
+            <div class="ta-stat-card ta-stat-chars-without-spaces">
+                <div class="ta-stat-label">Caracteres</div>
+                <div class="ta-stat-value" id="ta-chars-without-spaces">0</div>
+                <div class="ta-stat-sublabel">(sin espacios)</div>
+            </div>
+
+            <!-- Tarjeta 3: Número de palabras -->
+            <div class="ta-stat-card ta-stat-words">
+                <div class="ta-stat-label">Palabras</div>
+                <div class="ta-stat-value" id="ta-word-count">0</div>
+                <div class="ta-stat-sublabel">total</div>
+            </div>
+
+            <!-- Tarjeta 4: Número de oraciones -->
+            <div class="ta-stat-card ta-stat-sentences">
+                <div class="ta-stat-label">Oraciones</div>
+                <div class="ta-stat-value" id="ta-sentence-count">0</div>
+                <div class="ta-stat-sublabel">total</div>
+            </div>
+
+            <!-- Tarjeta 5: Tiempo estimado de lectura -->
+            <div class="ta-stat-card ta-stat-reading-time">
+                <div class="ta-stat-label">Tiempo de Lectura</div>
+                <div class="ta-stat-value" id="ta-reading-time">0 min</div>
+                <div class="ta-stat-sublabel">@200 wpm</div>
+            </div>
+        </div>
+
+        <!-- BOTONES DE CONTROL -->
+        <div class="ta-button-group">
+            <button id="ta-clear-btn" class="ta-btn ta-btn-clear" aria-label="Limpiar todo">Limpiar</button>
+            <button id="ta-copy-stats-btn" class="ta-btn ta-btn-copy" aria-label="Copiar estadísticas">Copiar Estadísticas</button>
+        </div>
+    </div>
+
+    <script src="text-analyzer.js"></script>
+

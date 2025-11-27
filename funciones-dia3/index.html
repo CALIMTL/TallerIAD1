@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Validador de Palíndromos</title>
+		<style>
+			body{font-family:Segoe UI, Roboto, Arial, sans-serif;margin:2rem;background:#f7f7fb;color:#111}
+			.card{max-width:640px;margin:0 auto;background:#fff;border-radius:8px;padding:1.5rem;box-shadow:0 6px 18px rgba(16,24,40,.06)}
+			h1{font-size:1.25rem;margin:0 0 .5rem}
+			label{display:block;margin-top:.5rem}
+			input[type="text"]{width:100%;padding:.5rem .6rem;font-size:1rem;border:1px solid #cbd5e1;border-radius:6px}
+			button{margin-top:.75rem;padding:.5rem .9rem;border-radius:6px;border:0;background:#0066cc;color:#fff;cursor:pointer}
+			button:active{transform:translateY(1px)}
+			.result{margin-top:1rem;padding:.8rem;border-radius:6px}
+			.ok{background:#e6fffa;color:#03543f;border:1px solid #b7f5e7}
+			.no{background:#fff1f2;color:#7f1d1d;border:1px solid #fecaca}
+			.hint{font-size:.9rem;color:#475569;margin-top:.5rem}
+		</style>
+	</head>
+	<body>
+		<main class="card" role="main">
+			<h1>Validador de Palíndromos</h1>
+			<p class="hint">Escribe una palabra o frase y pulsa <strong>Comprobar</strong> (o Enter). Ej.: <em>anilina</em>, <em>reconocer</em>, <em>anita lava la tina</em>.</p>
+
+			<label for="texto">Texto a comprobar</label>
+			<input id="texto" type="text" placeholder="Escribe aquí..." aria-describedby="help" />
+			<div id="help" class="hint">Se ignoran mayúsculas y espacios.</div>
+
+			<div>
+				<button id="comprobar">Comprobar</button>
+				<button id="limpiar" style="margin-left:.5rem;background:#64748b">Limpiar</button>
+			</div>
+
+			<div id="salida" class="result" aria-live="polite"></div>
+		</main>
+
+		<!-- Cargar la función principal (definida en palindromo.js) -->
+		<script src="palindromo.js"></script>
+		<script>
+			(function(){
+				var input = document.getElementById('texto');
+				var btn = document.getElementById('comprobar');
+				var limpiar = document.getElementById('limpiar');
+				var salida = document.getElementById('salida');
+
+				function mostrarResultado(texto, es){
+					salida.textContent = texto;
+					salida.className = 'result ' + (es ? 'ok' : 'no');
+				}
+
+				function manejar(){
+					var valor = input.value || '';
+					var limpio = valor.trim();
+					if(limpio.length === 0){
+						salida.textContent = 'Introduce un texto para comprobar.';
+						salida.className = 'result no';
+						return;
+					}
+
+					// Llamamos a la función definida en palindromo.js
+					try{
+						var es = typeof esPalindromo === 'function' && esPalindromo(limpio);
+						if(es) mostrarResultado('✓ "' + limpio + '" es un palíndromo.', true);
+						else mostrarResultado('✗ "' + limpio + '" NO es un palíndromo.', false);
+					}catch(e){
+						salida.textContent = 'Error al comprobar. Asegúrate de que "palindromo.js" está disponible.';
+						salida.className = 'result no';
+						console.error(e);
+					}
+				}
+
+				btn.addEventListener('click', manejar);
+				limpiar.addEventListener('click', function(){ input.value = ''; salida.textContent = ''; salida.className = 'result'; input.focus(); });
+
+				// Permitir Enter en el input
+				input.addEventListener('keydown', function(e){ if(e.key === 'Enter') manejar(); });
+
+			})();
+		</script>
+	</body>
+</html>

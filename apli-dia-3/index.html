@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNSC Archive - Operación Halo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="pokedex-container">
+        <!-- Encabezado -->
+        <div class="header">
+            <h1>[UNSC] ARCHIVE</h1>
+            <p>BUSCAR COMBATIENTE - FIRETEAM ALPHA</p>
+        </div>
+
+        <!-- Buscador -->
+        <div class="search-section">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Ej: spartan-117, master-chief..." 
+                aria-label="Buscar combatiente Halo"
+            />
+            <button id="searchBtn">Acceder</button>
+        </div>
+
+        <!-- Mensajes de error y carga -->
+        <div id="errorMessage" class="error-message"></div>
+        <div id="loading" class="loading">Escaneando BD UNSC</div>
+
+        <!-- Tarjeta del Combatiente -->
+        <div id="pokemonCard" class="pokemon-card">
+            <div class="pokemon-image">
+                <img id="pokemonImage" src="" alt="Combatiente Halo" />
+            </div>
+            <div class="pokemon-id">DESIGNACIÓN: <span id="pokemonId"></span></div>
+            <div class="pokemon-name" id="pokemonName"></div>
+            
+            <div class="pokemon-type" id="pokemonTypes"></div>
+
+            <div class="pokemon-stats">
+                <div class="stat-row">
+                    <span class="stat-name">BLINDAJE</span>
+                    <div class="stat-bar"><div class="stat-fill" id="statHp" style="width: 0%"></div></div>
+                    <span class="stat-value" id="hpValue">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">COMBATE</span>
+                    <div class="stat-bar"><div class="stat-fill" id="statAtk" style="width: 0%"></div></div>
+                    <span class="stat-value" id="atkValue">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">DEFENSA</span>
+                    <div class="stat-bar"><div class="stat-fill" id="statDef" style="width: 0%"></div></div>
+                    <span class="stat-value" id="defValue">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">TÁCTICO</span>
+                    <div class="stat-bar"><div class="stat-fill" id="statSpAtk" style="width: 0%"></div></div>
+                    <span class="stat-value" id="spAtkValue">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">RESISTENCIA</span>
+                    <div class="stat-bar"><div class="stat-fill" id="statSpDef" style="width: 0%"></div></div>
+                    <span class="stat-value" id="spDefValue">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-name">MOVILIDAD</span>
+                    <div class="stat-bar"><div class="stat-fill" id="statSpd" style="width: 0%"></div></div>
+                    <span class="stat-value" id="spdValue">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        (function() {
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            var errorMsg = document.getElementById('errorMessage');
+            var loading = document.getElementById('loading');
+            var pokemonCard = document.getElementById('pokemonCard');
+
+            function ocultarResultados() {
+                pokemonCard.classList.remove('show');
+                errorMsg.classList.remove('show');
+                loading.classList.remove('show');
+            }
+
+            function mostrarError(mensaje) {
+                ocultarResultados();
+                errorMsg.textContent = mensaje || '[ACCESO DENEGADO] Combatiente no encontrado en la base de datos UNSC.';
+                errorMsg.classList.add('show');
+            }
+
+            function mostrarCarga() {
+                ocultarResultados();
+                loading.classList.add('show');
+            }
+
+            function formatearPorcentaje(valor) {
+                return Math.min(100, Math.round((valor / 255) * 100));
+            }
+
+            function mostrarCombatiente(data) {
+                ocultarResultados();
+
+                // Imagen
+                var imagen = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+                document.getElementById('pokemonImage').src = imagen || 'https://via.placeholder.com/180';
+
+                // ID y nombre
+                document.getElementById('pokemonId').textContent = '#' + data.id;
+                document.getElementById('pokemonName').textContent = data.name;
+
+                // Tipos (roles UNSC)
+                var typesContainer = document.getElementById('pokemonTypes');
+                typesContainer.innerHTML = '';
+                data.types.forEach(function(typeObj) {
+                    var typeName = typeObj.type.name;
+                    var badge = document.createElement('span');
+                    badge.className = 'type-badge type-' + typeName;
+                    badge.textContent = typeName.toUpperCase();
+                    typesContainer.appendChild(badge);
+                });
+
+                // Stats
+                var stats = {};
+                data.stats.forEach(function(stat) {
+                    stats[stat.stat.name] = stat.base_stat;
+                });
+
+                var statMap = {
+                    'hp': { element: 'Hp', value: 'hpValue' },
+                    'attack': { element: 'Atk', value: 'atkValue' },
+                    'defense': { element: 'Def', value: 'defValue' },
+                    'sp-atk': { element: 'SpAtk', value: 'spAtkValue' },
+                    'sp-def': { element: 'SpDef', value: 'spDefValue' },
+                    'speed': { element: 'Spd', value: 'spdValue' }
+                };
+
+                for (var key in statMap) {
+                    var val = stats[key] || 0;
+                    var pct = formatearPorcentaje(val);
+                    document.getElementById('stat' + statMap[key].element).style.width = pct + '%';
+                    document.getElementById(statMap[key].value).textContent = val;
+                }
+
+                // Mostrar tarjeta
+                pokemonCard.classList.add('show');
+            }
+
+            function buscar() {
+                var nombre = searchInput.value.trim();
+                if (!nombre) {
+                    mostrarError('[ERROR] Por favor ingresa una designación de combatiente.');
+                    return;
+                }
+
+                mostrarCarga();
+
+                obtenerCombatiente(nombre)
+                    .then(mostrarCombatiente)
+                    .catch(function(err) {
+                        mostrarError('[FALLO CRÍTICO] ' + (err.message || 'Combatiente no disponible en registros UNSC.'));
+                    });
+            }
+
+            searchBtn.addEventListener('click', buscar);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') buscar();
+            });
+        })();
+    </script>
+</body>
+</html>

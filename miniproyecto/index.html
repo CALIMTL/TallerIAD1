@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halo – Registro de Unidades</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 50%, #0a3a0a 100%);
+            color: #8fbc8f;
+            overflow-x: hidden;
+        }
+
+        /* Efecto de escaneo CRT */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.15) 0px,
+                    rgba(0, 0, 0, 0.15) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hud-container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* ENCABEZADO */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 3px solid #ff8c00;
+            padding-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #ff8c00;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 140, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.8);
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #8fbc8f;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        /* NAVEGACIÓN DE SECCIONES */
+        .nav-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(47, 79, 47, 0.1) 0%, rgba(105, 105, 105, 0.1) 100%);
+            border: 2px solid #708070;
+            border-radius: 2px;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(143, 188, 143, 0.1);
+        }
+
+        .nav-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(112, 128, 112, 0.3);
+            color: #8fbc8f;
+            border: 2px solid #8fbc8f;
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(143, 188, 143, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(143, 188, 143, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff8c00 0%, #e67e00 100%);
+            color: #1a1a1a;
+            border-color: #ffaa00;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.6);
+        }
+
+        /* SECCIÓN DE BÚSQUEDA */
+        .search-section {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(47, 79, 47, 0.2) 0%, rgba(105, 105, 105, 0.2) 100%);
+            border: 2px solid #708070;
+            border-radius: 2px;
+            box-shadow: 
+                inset 0 0 10px rgba(143, 188, 143, 0.1),
+                0 0 20px rgba(255, 140, 0, 0.2);
+        }
+
+        .search-section label {
+            display: none;
+        }
+
+        .search-section input {
+            flex: 1;
+            padding: 0.9rem 1rem;
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid #8fbc8f;
+            border-radius: 2px;
+            color: #8fbc8f;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 10px rgba(143, 188, 143, 0.1);
+        }
+
+        .search-section input:focus {
+            outline: none;
+            border-color: #ff8c00;
+            box-shadow: 
+                inset 0 0 15px rgba(143, 188, 143, 0.2),
+                0 0 15px rgba(255, 140, 0, 0.4);
+            background: rgba(10, 10, 10, 0.9);
+        }
+
+        .search-section input::placeholder {
+            color: rgba(143, 188, 143, 0.5);
+        }
+
+        .search-section button {
+            padding: 0.9rem 2.5rem;
+            background: linear-gradient(135deg, #8fbc8f 0%, #6b8e6b 100%);
+            color: #1a1a1a;
+            border: 2px solid #ff8c00;
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 10px rgba(255, 140, 0, 0.4),
+                inset 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+
+        .search-section button:hover {
+            background: linear-gradient(135deg, #ff8c00 0%, #e67e00 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 
+                0 0 20px rgba(255, 140, 0, 0.7),
+                inset 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .search-section button:active {
+            transform: translateY(0);
+        }
+
+        /* INDICADOR DE ESTADO */
+        .status-indicator {
+            text-align: center;
+            padding: 1rem;
+            min-height: 2rem;
+            font-size: 0.9rem;
+            color: #ff8c00;
+            letter-spacing: 1px;
+        }
+
+        .status-indicator.loading {
+            color: #ffff00;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-indicator.error {
+            color: #ff0000;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* CONTENEDOR GRID */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* TARJETA */
+        .card {
+            background: linear-gradient(135deg, rgba(47, 79, 47, 0.3) 0%, rgba(105, 105, 105, 0.2) 100%);
+            border: 3px solid #708070;
+            border-radius: 2px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 15px rgba(143, 188, 143, 0.2),
+                inset 0 0 10px rgba(143, 188, 143, 0.05);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #ff8c00;
+            box-shadow: 
+                0 0 30px rgba(255, 140, 0, 0.5),
+                inset 0 0 15px rgba(143, 188, 143, 0.1);
+        }
+
+        .card.expanded {
+            grid-column: 1 / -1;
+            border-color: #ff8c00;
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 250px;
+            background: #0a0a0a;
+            overflow: hidden;
+            border-bottom: 2px solid #708070;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-image-emoji {
+            font-size: 6rem;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(143, 188, 143, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.9) contrast(1.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-image-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d3436 100%);
+            color: #8fbc8f;
+            font-size: 3rem;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff8c00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 140, 0, 0.3);
+            flex: 1;
+        }
+
+        .expand-icon {
+            font-size: 1.2rem;
+            color: #ff8c00;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+        }
+
+        .card:hover .expand-icon {
+            transform: scale(1.3);
+            animation: pulse 0.6s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .card-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid rgba(143, 188, 143, 0.2);
+            padding-bottom: 0.6rem;
+        }
+
+        .card-info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #8fbc8f;
+            min-width: 100px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: #a9d5a9;
+            text-align: right;
+            flex: 1;
+            padding-left: 1rem;
+        }
+
+        /* TARJETA EXPANDIDA */
+        .card-expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            background: linear-gradient(135deg, rgba(26, 26, 39, 0.99) 0%, rgba(45, 52, 54, 0.99) 100%);
+            border: 3px solid #ff8c00;
+            border-radius: 4px;
+            padding: 2.5rem;
+            z-index: 10001;
+            overflow-y: auto;
+            box-shadow: 
+                0 0 100px rgba(255, 140, 0, 0.8),
+                0 0 200px rgba(0, 0, 0, 0.9),
+                inset 0 0 20px rgba(143, 188, 143, 0.1);
+            animation: slideDown 0.4s ease;
+            pointer-events: auto;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -55%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* Overlay para expandida - BLOQUEADOR */
+        .card.expanded::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 10000;
+            pointer-events: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.8rem;
+            color: #ff8c00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10002;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            border: 1px solid #ff8c00;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.3) rotate(90deg);
+            text-shadow: 0 0 10px rgba(255, 140, 0, 0.7);
+            background: rgba(255, 140, 0, 0.2);
+        }
+
+        .card-expanded-content {
+            position: relative;
+            z-index: 1001;
+        }
+
+        .expanded-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(143, 188, 143, 0.3);
+        }
+
+        .expanded-section:last-child {
+            border-bottom: none;
+        }
+
+        .expanded-section h3 {
+            color: #ff8c00;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255, 140, 0, 0.3);
+        }
+
+        .expanded-section p {
+            color: #a9d5a9;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .weapons-list,
+        .achievements-list {
+            list-style: none;
+            color: #a9d5a9;
+            font-size: 0.95rem;
+        }
+
+        .weapons-list li,
+        .achievements-list li {
+            padding: 0.4rem 0;
+            margin-left: 1rem;
+        }
+
+        .weapons-list li {
+            color: #ff8c00;
+        }
+
+        .achievements-list li {
+            color: #ffeb3b;
+        }
+
+        /* Scrollbar personalizado */
+        .card-expanded::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .card-expanded::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .card-expanded::-webkit-scrollbar-thumb {
+            background: #8fbc8f;
+            border-radius: 4px;
+        }
+
+        .card-expanded::-webkit-scrollbar-thumb:hover {
+            background: #ff8c00;
+        }
+
+        /* ESTADOS */
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .status-alive {
+            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
+            color: #000;
+        }
+
+        .status-destroyed,
+        .status-dead {
+            background: linear-gradient(135deg, #ff0000 0%, #aa0000 100%);
+            color: #fff;
+        }
+
+        .status-unknown {
+            background: linear-gradient(135deg, #ffff00 0%, #aaaa00 100%);
+            color: #000;
+        }
+
+        .status-active {
+            background: linear-gradient(135deg, #00ffff 0%, #00aaaa 100%);
+            color: #000;
+        }
+
+        /* FACCIÓN */
+        .faction-badge {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid #ff8c00;
+            border-radius: 2px;
+            font-size: 0.75rem;
+            color: #ff8c00;
+            background: rgba(255, 140, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .faction-unsc { border-color: #8fbc8f; color: #8fbc8f; background: rgba(143, 188, 143, 0.1); }
+        .faction-covenant { border-color: #ff6b9d; color: #ff6b9d; }
+        .faction-banished { border-color: #ff0000; color: #ff0000; }
+        .faction-unknown { border-color: #ffff00; color: #ffff00; }
+
+        /* MENSAJES */
+        .loading-message,
+        .error-message,
+        .no-results-message {
+            text-align: center;
+            padding: 3rem 1rem;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .loading-message {
+            color: #ffff00;
+            animation: pulse 1.5s infinite;
+        }
+
+        .error-message {
+            color: #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0000;
+            border-radius: 2px;
+            margin: 2rem;
+        }
+
+        .no-results-message {
+            color: #ff8c00;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+
+            .search-section {
+                flex-direction: column;
+                margin-bottom: 2rem;
+            }
+
+            .search-section input,
+            .search-section button {
+                width: 100%;
+            }
+
+            .card {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hud-container {
+                padding: 1rem;
+            }
+
+            .header {
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hud-container">
+        <!-- ENCABEZADO -->
+        <div class="header">
+            <h1>⚔ HALO – REGISTRO DE UNIDADES ⚔</h1>
+            <p>UNSC COMMAND CENTER - MILITARY ASSET TRACKING SYSTEM</p>
+        </div>
+
+        <!-- NAVEGACIÓN DE SECCIONES -->
+        <div class="nav-section">
+            <button class="nav-btn active" data-section="personajes">👤 PERSONAJES</button>
+            <button class="nav-btn" data-section="armas">⚔️ ARMAS</button>
+            <button class="nav-btn" data-section="lugares">📍 LUGARES</button>
+            <button class="nav-btn" data-section="juegos">🎮 JUEGOS</button>
+        </div>
+
+        <!-- SECCIÓN DE BÚSQUEDA -->
+        <div class="search-section" role="search">
+            <label for="searchInput">Buscar Unidad:</label>
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Ingresa nombre de unidad, facción o tipo..." 
+                aria-label="Búsqueda de unidades militares"
+            />
+            <button id="searchBtn" aria-label="Ejecutar búsqueda">
+                ACCEDER
+            </button>
+        </div>
+
+        <!-- INDICADOR DE ESTADO -->
+        <div id="statusIndicator" class="status-indicator"></div>
+
+        <!-- CONTENEDOR DE RESULTADOS -->
+        <div id="container" class="container" role="main" aria-label="Resultados de búsqueda"></div>
+    </div>
+
+    <script src="api.js"></script>
+</body>
+</html>

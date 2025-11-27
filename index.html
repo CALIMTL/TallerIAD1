@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller de Programación con IA - Ejercicios</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #4f46e5;
+            --accent-color: #ff8c00;
+            --bg-color: #f8fafc;
+            --bg-gradient-1: #0f172a;
+            --bg-gradient-2: #1e3a8a;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animación de fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 140, 0, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%);
+            color: white;
+            width: 100%;
+            padding: 3rem 1rem;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+            animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            margin-top: 0.5rem;
+            opacity: 0.95;
+            font-size: clamp(0.95rem, 3vw, 1.1rem);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        main {
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 1rem 3rem 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1.2rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 2px solid transparent;
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+
+        /* Animación escalonada para cada tarjeta */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+        .card:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Efecto de hover mejorado */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+            z-index: 1;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2), 
+                        0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card:hover .card-arrow::after {
+            transform: translateX(8px);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--primary-color);
+            transition: var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card h2 {
+            margin: 0 0 0.75rem 0;
+            font-size: 1.4rem;
+            color: var(--text-color);
+            transition: var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card p {
+            margin: 0;
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-meta {
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+            opacity: 0.8;
+        }
+
+        .card-arrow {
+            margin-top: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-arrow::after {
+            content: '→';
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-out 0.8s both;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 2rem 1rem;
+                margin-bottom: 2rem;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 0 1rem 2rem 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Accessibility */
+        .card:focus-visible {
+            outline: 3px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* Reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎓 Taller de Programación con IA</h1>
+        <p class="subtitle">Colección de Ejercicios y Proyectos Prácticos</p>
+    </header>
+
+    <main>
+        <!-- Día 2: Lógica -->
+        <a href="Lógica-Dia_2/index.html" class="card">
+            <div class="card-icon">🧠</div>
+            <h2>Lógica - Día 2</h2>
+            <p>Ejercicios fundamentales de lógica de programación con JavaScript. Condicionales, bucles y funciones.</p>
+            <div class="card-meta">Día 2 • Fundamentos</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+
+        <!-- Día 2: DOM -->
+        <a href="dom-dia-2/index.html" class="card">
+            <div class="card-icon">🌐</div>
+            <h2>Intro al DOM - Día 2</h2>
+            <p>Manipulación del DOM, eventos y aplicaciones interactivas: calculadora, reloj, analizador de texto, etc.</p>
+            <div class="card-meta">Día 2 • Interactividad</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+
+        <!-- Día 3: Funciones -->
+        <a href="funciones-dia3/index.html" class="card">
+            <div class="card-icon">🔧</div>
+            <h2>Funciones - Día 3</h2>
+            <p>Validador de palíndromos con lógica encapsulada. Detección de patrones y análisis de texto.</p>
+            <div class="card-meta">Día 3 • Funciones</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+
+        <!-- Día 3: API Rick and Morty -->
+        <a href="api-rick-morty/index.html" class="card">
+            <div class="card-icon">👽</div>
+            <h2>API Rick and Morty</h2>
+            <p>Consumo de API pública para búsqueda de personajes. Grid responsivo con tarjetas filtradas por nombre.</p>
+            <div class="card-meta">Día 3 • APIs</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+
+        <!-- Miniproyecto: Halo Centro de Monitoreo -->
+        <a href="miniproyecto/index.html" class="card">
+            <div class="card-icon">⚔️</div>
+            <h2>Halo - Centro UNSC</h2>
+            <p>Centro de monitoreo militar Halo con tarjetas expandibles, búsqueda por facción y detalles completos de combatientes.</p>
+            <div class="card-meta">Miniproyecto • Sci-Fi</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+
+        <!-- API: Pokedex Halo -->
+        <a href="apli-dia-3/index.html" class="card">
+            <div class="card-icon">⚡</div>
+            <h2>Pokedex Halo</h2>
+            <p>Buscador de combatientes Halo con estética neón. Consumo de API con fallback local y tarjetas con stats animados.</p>
+            <div class="card-meta">Día 3 • APIs</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+
+        <!-- Validador: Palíndromos -->
+        <a href="funciones-dia3/index.html" class="card">
+            <div class="card-icon">✅</div>
+            <h2>Validador de Palíndromos</h2>
+            <p>Herramienta para detectar palabras y frases palindrómicas. Interfaz limpia con feedback visual en tiempo real.</p>
+            <div class="card-meta">Día 3 • Lógica</div>
+            <div class="card-arrow">Explorar</div>
+        </a>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Taller de Inteligencia Artificial • Ejercicios de Programación • Todos los derechos reservados</p>
+    </footer>
+
+</body>
+
+</html>

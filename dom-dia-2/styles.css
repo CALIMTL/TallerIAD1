@@ -1,0 +1,678 @@
+/* styles.css
+   Estilos para la calculadora web incluida en index.html
+   Mantener diseños simples y responsivos.
+*/
+
+/* estilos básicos de la página podrían definirse aquí o heredarse */
+
+.webcalc {
+  max-width: 360px;
+  margin: 18px auto;
+  border-radius: 10px;
+  background: #f7f7f9;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.webcalc-screen {
+  height: 56px;
+  background: #222;
+  color: #0f0;
+  font-size: 1.5rem;
+  text-align: right;
+  padding: 10px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.webcalc-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.wc-btn {
+  padding: 12px 8px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.wc-btn:focus {
+  outline: 3px solid #8ab4ff;
+}
+
+.wc-btn-op {
+  background: #f0f6ff;
+}
+
+.wc-btn-equals {
+  background: #4caf50;
+  color: #fff;
+  grid-row: span 2;
+}
+
+.wc-btn-zero {
+  grid-column: span 2;
+}
+
+.wc-btn-clear {
+  background: #ffdddd;
+}
+
+.webcalc-help {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* Responsive: pantallas pequeñas */
+@media (max-width: 420px) {
+  .webcalc { padding: 10px; }
+  .webcalc-screen { font-size: 1.2rem; height: 48px; }
+  .wc-btn { padding: 10px 6px; font-size: 0.95rem; }
+}
+
+/* === Estilos para el Generador de Colores === */
+
+.color-generator {
+  max-width: 420px;
+  margin: 18px auto;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.cg-color-box {
+  height: 300px;
+  background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: background-color 0.3s ease-in-out;
+  border: 2px solid #ddd;
+}
+
+.cg-hex-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 12px 0;
+  font-family: 'Courier New', monospace;
+  color: #333;
+}
+
+.cg-button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.cg-btn {
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.cg-btn-generate {
+  background: #2196F3;
+  color: #fff;
+}
+
+.cg-btn-generate:hover {
+  background: #1976D2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.cg-btn-copy {
+  background: #FF9800;
+  color: #fff;
+}
+
+.cg-btn-copy:hover {
+  background: #F57C00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+}
+
+.cg-btn:active {
+  transform: translateY(0);
+}
+
+.cg-btn:focus {
+  outline: 3px solid #8ab4ff;
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+  .color-generator { padding: 12px; }
+  .cg-color-box { height: 250px; }
+  .cg-btn { padding: 8px 12px; font-size: 0.9rem; }
+}
+
+/* ========== RELOJ DIGITAL INTERACTIVO CON ALARMA ========== */
+
+.digital-clock-container {
+  max-width: 520px;
+  margin: 24px auto;
+  padding: 24px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: #00ff00;
+  font-family: 'Courier New', 'Monaco', monospace;
+  border: 2px solid #333;
+}
+
+.clock-greeting {
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  color: #ffcc00;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+}
+
+.clock-display {
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 16px 0;
+  letter-spacing: 6px;
+  text-shadow: 0 0 15px #00ff00, 0 0 30px #00aa00, 0 0 45px rgba(0, 255, 0, 0.3);
+  font-family: 'Courier New', 'Monaco', monospace;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 16px;
+  border-radius: 8px;
+  border: 2px solid #00ff00;
+  line-height: 1.1;
+}
+
+.clock-date {
+  font-size: 1.1rem;
+  color: #00dd00;
+  margin-bottom: 24px;
+  font-weight: 500;
+  text-shadow: 0 0 8px rgba(0, 221, 0, 0.4);
+}
+
+.clock-alarm-section {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 24px;
+  border: 1px solid #444;
+}
+
+.clock-alarm-section h3 {
+  color: #ffaa00;
+  margin: 0 0 16px 0;
+  font-size: 1.2rem;
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.4);
+}
+
+.alarm-input-group {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.clock-alarm-input {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 2px solid #00ff00;
+  background: #0a0a0a;
+  color: #00ff00;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+}
+
+.clock-alarm-input:focus {
+  outline: none;
+  box-shadow: 0 0 12px #00ff00;
+  border-color: #00ff00;
+}
+
+.alarm-button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.clock-btn {
+  padding: 11px 18px;
+  font-size: 0.95rem;
+  border: 2px solid #00ff00;
+  background: #0a0a0a;
+  color: #00ff00;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.25s ease;
+  font-family: 'Courier New', monospace;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.clock-btn:hover {
+  background: #00ff00;
+  color: #000;
+  box-shadow: 0 0 15px #00ff00;
+  transform: translateY(-2px);
+}
+
+.clock-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 0 8px #00ff00;
+}
+
+.clock-btn:focus {
+  outline: 2px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+.clock-alarm-status {
+  margin: 12px 0;
+  font-size: 0.95rem;
+  color: #888;
+  min-height: 24px;
+  transition: color 0.3s ease;
+}
+
+.alarm-active-indicator {
+  color: #4caf50;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.clock-alarm-notification {
+  display: none;
+  margin-top: 16px;
+  padding: 20px;
+  background: #ff1744;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  animation: alarm-blink 0.5s infinite;
+  border: 2px solid #ff1100;
+}
+
+@keyframes alarm-blink {
+  0%, 100% {
+    opacity: 1;
+    background: #ff1744;
+  }
+  50% {
+    opacity: 0.4;
+    background: #cc0033;
+  }
+}
+
+.clock-mode-toggle {
+  margin-top: 20px;
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  border: 2px solid #ffcc00;
+  background: #0a0a0a;
+  color: #ffcc00;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.25s ease;
+  font-family: 'Courier New', monospace;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.clock-mode-toggle:hover {
+  background: #ffcc00;
+  color: #000;
+  box-shadow: 0 0 12px #ffcc00;
+  transform: translateY(-2px);
+}
+
+.clock-mode-toggle:active {
+  transform: translateY(0);
+}
+
+.clock-mode-toggle:focus {
+  outline: 2px solid #00ff00;
+  outline-offset: 2px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 550px) {
+  .digital-clock-container {
+    padding: 16px;
+    margin: 16px auto;
+  }
+  .clock-display {
+    font-size: 2.8rem;
+    letter-spacing: 4px;
+    padding: 12px;
+  }
+  .clock-greeting {
+    font-size: 1.2rem;
+  }
+  .clock-date {
+    font-size: 0.95rem;
+  }
+  .clock-btn {
+    padding: 9px 14px;
+    font-size: 0.85rem;
+  }
+  .clock-alarm-input {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================
+   ESTILOS PARA ANALIZADOR DE TEXTO
+   ============================================ */
+
+/**
+ * CONTENEDOR PRINCIPAL
+ * - max-width: limita el ancho para mejor legibilidad
+ * - margin: centra el contenedor
+ * - background: color de fondo suave
+ */
+.text-analyzer {
+  max-width: 900px;
+  margin: 20px auto;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/**
+ * TEXTAREA: Área de edición de texto
+ * - min-height: mínimo 250px para que sea cómodo escribir
+ * - resize: vertical (solo puede cambiar altura)
+ * - box-shadow: efecto de profundidad
+ */
+.ta-textarea {
+  width: 100%;
+  min-height: 250px;
+  padding: 15px;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  border: 2px solid #34495e;
+  border-radius: 8px;
+  background: #ecf0f1;
+  color: #2c3e50;
+  resize: vertical;
+  box-sizing: border-box;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/**
+ * TEXTAREA: Estado focus (cuando el usuario hace clic)
+ * - border-color: cambiar a azul
+ * - background: ligero cambio
+ * - box-shadow: efecto más pronunciado
+ */
+.ta-textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  background: #ffffff;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+/**
+ * GRID DE ESTADÍSTICAS
+ * - display: grid para distribuir tarjetas
+ * - grid-template-columns: responsive (auto-fit)
+ * - gap: espaciado entre tarjetas
+ */
+.ta-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+/**
+ * TARJETA DE ESTADÍSTICA
+ * - Diseño de "card" con fondo blanco, sombra y borde
+ * - Cada tarjeta tiene un color diferenciado
+ */
+.ta-stat-card {
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-top: 4px solid #95a5a6;
+  transition: all 0.3s ease;
+}
+
+/**
+ * HOVER EN TARJETAS
+ * - Lift: elevar la tarjeta al pasar el ratón
+ * - Shadow: aumentar la sombra
+ */
+.ta-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Colores específicos para cada métrica */
+.ta-stat-chars-with-spaces {
+  border-top-color: #e74c3c;
+}
+
+.ta-stat-chars-without-spaces {
+  border-top-color: #f39c12;
+}
+
+.ta-stat-words {
+  border-top-color: #3498db;
+}
+
+.ta-stat-sentences {
+  border-top-color: #9b59b6;
+}
+
+.ta-stat-reading-time {
+  border-top-color: #1abc9c;
+}
+
+/**
+ * ETIQUETA DE ESTADÍSTICA
+ * - font-size: pequeño para distinguir del valor
+ * - color: gris para no distraer
+ */
+.ta-stat-label {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+/**
+ * VALOR PRINCIPAL DE ESTADÍSTICA
+ * - font-size: grande y llamativo
+ * - color: oscuro para contrastar
+ * - animation: suave transición al cambiar
+ */
+.ta-stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  animation: ta-pulse-value 0.4s ease-in-out;
+}
+
+/**
+ * ANIMACIÓN: Pulso suave al actualizar número
+ * - Efecto visual indica cambio sin ser intrusivo
+ */
+@keyframes ta-pulse-value {
+  0% {
+    transform: scale(1);
+    color: #3498db;
+  }
+  50% {
+    transform: scale(1.1);
+    color: #e74c3c;
+  }
+  100% {
+    transform: scale(1);
+    color: #2c3e50;
+  }
+}
+
+/**
+ * SUB-ETIQUETA DE ESTADÍSTICA
+ * - font-size: muy pequeña
+ * - color: gris claro para no distraer
+ */
+.ta-stat-sublabel {
+  font-size: 0.75rem;
+  color: #bdc3c7;
+  margin-top: 4px;
+}
+
+/**
+ * GRUPO DE BOTONES
+ * - Contenedor flex para alinear botones horizontalmente
+ * - gap: espacio entre botones
+ * - margin: separación del resto del contenido
+ */
+.ta-button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/**
+ * BOTÓN GENÉRICO
+ * - padding: espaciado interno cómodo
+ * - border: ninguno para diseño plano moderno
+ * - cursor: pointer para indicar que es clickeable
+ * - transition: suave transición de efectos
+ */
+.ta-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/**
+ * BOTÓN LIMPIAR
+ * - color de fondo rojo (advertencia)
+ * - color de texto blanco para contraste
+ */
+.ta-btn-clear {
+  background: #e74c3c;
+  color: #ffffff;
+}
+
+.ta-btn-clear:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.ta-btn-clear:active {
+  transform: translateY(0);
+}
+
+/**
+ * BOTÓN COPIAR ESTADÍSTICAS
+ * - color de fondo verde (acción positiva)
+ * - color de texto blanco
+ */
+.ta-btn-copy {
+  background: #27ae60;
+  color: #ffffff;
+}
+
+.ta-btn-copy:hover {
+  background: #229954;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.ta-btn-copy:active {
+  transform: translateY(0);
+}
+
+/**
+ * RESPONSIVE: Para pantallas pequeñas (max-width: 600px)
+ * - Grid de estadísticas se ajusta a 2 columnas
+ * - Botones se adaptan a espacios más pequeños
+ */
+@media (max-width: 600px) {
+  .text-analyzer {
+    padding: 15px;
+    margin: 15px 10px;
+  }
+
+  .ta-textarea {
+    min-height: 200px;
+    font-size: 0.95rem;
+  }
+
+  .ta-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+  }
+
+  .ta-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .ta-button-group {
+    gap: 8px;
+  }
+
+  .ta-btn {
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+}
